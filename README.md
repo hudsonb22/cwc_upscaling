@@ -4,7 +4,7 @@ A neural network model for predicting canopy water content (CWC / EWT) from Harm
 
 ## Overview
 
-The model takes HLS multispectral tiles and terrain data as input and produces spatially explicit CWC predictions at 60m resolution as GeoTIFFs. Low-NDVI pixels (non-vegetated areas) are masked before inference.
+The model takes HLS multispectral tiles and terrain data as input and produces spatially explicit CWC predictions at 60m resolution as GeoTIFFs. Low-NDVI pixels (non-vegetated areas) are masked before inference. Current iteration is trained only on dry season Southern Sierra ROI. Generalize with caution!
 
 **Inputs:**
 - HLS spectral bands: Blue, Green, Red, NIR, SWIR1, SWIR2
