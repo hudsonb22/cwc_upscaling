@@ -6,6 +6,8 @@ A neural network model for predicting canopy water content (CWC / EWT) from Harm
 
 The model takes HLS multispectral tiles and terrain data as input and produces spatially explicit CWC predictions at 60m resolution as GeoTIFFs. Low-NDVI pixels (non-vegetated areas) are masked before inference. Current iteration is trained only on dry season Southern Sierra ROI. Generalize with caution!
 
+There are some example predition .tif files in sample_predictions. 
+
 **Inputs:**
 - HLS spectral bands: Blue, Green, Red, NIR, SWIR1, SWIR2
 - Topographic covariates: elevation, slope, aspect (sin-transformed)
@@ -40,7 +42,7 @@ python scripts/run_inference.py \
 The covariate directory should contain `.tif` files with filenames containing `elev`, `slope`, and `aspect`.
 
 ### Inspect a GeoTIFF
-tif_info is a useful little script for quickly inspecting .tif metadata that I've been using
+tif_info.py is a useful little script for quickly inspecting .tif metadata that I've been using
 
 ```bash
 python scripts/tif_info.py /path/to/file.tif
