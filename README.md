@@ -25,7 +25,6 @@ python scripts/run_inference.py \
     --covar_dir /path/to/covariates/ \
     --model trained_models/ewt_model.pt \
     --norm_stats trained_models/norm_stats.pkl \
-    --batch_size 4096
 ```
 
 **Arguments:**
