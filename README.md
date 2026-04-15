@@ -24,7 +24,7 @@ python scripts/run_inference.py \
     --output_dir /path/to/output_cwc/ \
     --covar_dir /path/to/covariates/ \
     --model trained_models/ewt_model.pt \
-    --norm_stats trained_models/norm_stats.pkl \
+    --norm_stats trained_models/norm_stats.pkl 
 ```
 
 **Arguments:**
