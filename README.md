@@ -1,6 +1,6 @@
 # CWC Upscaling
 
-A neural network model for predicting canopy water content (CWC / EWT) from Harmonized Landsat Sentinel (HLS) satellite imagery and topographic covariates.
+A neural network model for predicting canopy water content (CWC / EWT) from Harmonized Landsat Sentinel (HLS) satellite imagery and topographic covariates. Message me for more info on behind the scenes architecture if you want to deploy elsewhere!
 
 ## Overview
 
