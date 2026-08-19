@@ -26,9 +26,9 @@ Two models ship with the repo. They were trained on different areas and differen
 - HLS spectral bands, in this order: Blue, Green, Red, NIR, SWIR1, SWIR2
 - Topographic covariates, derived from the supplied DEM: elevation, slope, aspect
 
-**Output:** Predicted CWC raster (GeoTIFF), at either 30m or 60m — both resolutions have been verified to work well, so pick whichever suits your application with `--30m` / `--60m`. Nodata is `-9999.0`.
+**Output:** Predicted CWC raster (GeoTIFF), at either 30m or, pick whichever suits your application with `--30m` / `--60m`. Nodata is `-9999.0`.
 
-The Sierra model is trained only on the dry season Southern Sierra ROI — generalize with caution. The statewide model covers more ground but was trained without the HAND covariate.
+The Sierra model is trained only on the dry season Southern Sierra ROI — generalize with caution. The statewide model is probably better to use in nearly all cases. 
 
 ## Usage
 
@@ -74,7 +74,7 @@ python scripts/run_inference.py \
 | `--model` | Path to trained model weights (`.pt`). Defaults to the selected region's bundled weights |
 | `--norm_stats` | Path to normalization stats (`.pkl`). Defaults to the selected region's bundled stats |
 | `--full_state` | Use the statewide model (`trained_models/ca_state/`) instead of the Sierra ROI model |
-| `--30m` / `--60m` | Resolution to predict at; both are supported and validated. `--60m` (the default) resamples each tile in its native CRS first; `--30m` uses the tile's native grid |
+| `--30m` / `--60m` | Resolution to predict at; both are supported and validated. `--60m` (the default) resamples each tile to native EMIT 60m resolution first; `--30m` uses the tile's native grid |
 | `--batch_size` | Pixels per inference batch (default: 4096) — tune to your GPU memory |
 
 `--model` and `--norm_stats` are overrides, not requirements. If you pass one, pass the matching other: a model run against another model's normalization stats will produce wrong values, and a mismatched covariate count is rejected at startup.
