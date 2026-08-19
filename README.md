@@ -46,7 +46,7 @@ The Sierra model is trained only on the dry season Southern Sierra ROI — gener
 > export PATH="/path/to/conda/envs/your_env/bin:$PATH"
 > ```
 
-The bundled weights and stats are found automatically (given the smae file structure as on here), so the common case only needs the three data paths:
+The bundled weights and stats are found automatically, so the common case only needs the three data paths:
 
 ```bash
 # Sierra ROI model
