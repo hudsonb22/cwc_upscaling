@@ -34,6 +34,18 @@ The Sierra model is trained only on the dry season Southern Sierra ROI — gener
 
 ### Run Inference
 
+> **NOTE:** The inference script takes a single DEM file and generates slope/aspect model inputs. Make sure you have `gdaldem` installed and it is in your PATH.
+>
+> ```bash
+> conda install -c conda-forge gdal
+> ```
+>
+> If `gdaldem` is installed but not found, add its location to your PATH, e.g.:
+>
+> ```bash
+> export PATH="/path/to/conda/envs/your_env/bin:$PATH"
+> ```
+
 The bundled weights and stats are found automatically, so the common case only needs the three data paths:
 
 ```bash
