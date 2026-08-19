@@ -20,7 +20,7 @@ Two models ship with the repo. They were trained on different areas and differen
 | Features | 9 | 10 |
 | Hidden dims | `[64, 32, 16]` | `[128, 128, 128, 128]` |
 | Aspect encoding | single `sin(aspect)` band | `northing = cos` + `easting = sin` |
-| Training area | dry season Southern Sierra ROI | California statewide |
+| Training area | dry season Southern Sierra ROI | California statewide, year-round |
 
 **Inputs:**
 - HLS spectral bands, in this order: Blue, Green, Red, NIR, SWIR1, SWIR2
