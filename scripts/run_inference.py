@@ -201,18 +201,21 @@ def process_file(hls_path, args, stats, model, device, output_dir, suffix, terra
     output_path = output_dir / f"{hls_path.stem}{suffix}.tif"
 
     ##resample HLS to 60m in native CRS, or keep the native 30m grid
-    hls_ref = rxr.open_rasterio(hls_path)
+    # keep the source handle separate from hls_ref: reprojecting rebinds hls_ref to a new
+    # in-memory object, and the file it came from still has to be closed explicitly (below).
+    hls_src = rxr.open_rasterio(hls_path)
+    hls_ref = hls_src
     if args.resolution == 30:
         print(f"\n[1/6] Using HLS at native 30m resolution (no resampling)...")
     else:
         print(f"\n[1/6] Resampling HLS to 60m (native CRS)...")
-        if hls_ref.rio.crs.is_geographic:
+        if hls_src.rio.crs.is_geographic:
             # geographic CRS (degrees): ~60m in degrees at equator
             target_res = 60 / 111320
         else:
             # projected CRS (meters)
             target_res = 60
-        hls_ref = hls_ref.rio.reproject(hls_ref.rio.crs, resolution=target_res, resampling=Resampling.average)
+        hls_ref = hls_src.rio.reproject(hls_src.rio.crs, resolution=target_res, resampling=Resampling.average)
 
     hls_arr   = hls_ref.values.astype(np.float32)  # (bands, H, W)
     transform = hls_ref.rio.transform()
@@ -226,9 +229,11 @@ def process_file(hls_path, args, stats, model, device, output_dir, suffix, terra
     for name in ("elevation", "slope", "aspect"):
         cov_path = terrain[name]
         print(f"      {name}: {cov_path.name}")
-        cov = rxr.open_rasterio(cov_path, masked=True)
-        cov_matched = cov.rio.reproject_match(hls_ref)
-        covar_bands.append(cov_matched.values[0].astype(np.float32))  # squeeze band dim
+        # close each covariate before moving on — slope/aspect live in a temp dir that has
+        # to be removable at exit, and Windows refuses to delete a file with an open handle
+        with rxr.open_rasterio(cov_path, masked=True) as cov:
+            cov_matched = cov.rio.reproject_match(hls_ref)
+            covar_bands.append(cov_matched.values[0].astype(np.float32))  # squeeze band dim
 
     if args.full_state:
         # full-state model expects aspect split into northing/easting components
@@ -247,6 +252,7 @@ def process_file(hls_path, args, stats, model, device, output_dir, suffix, terra
         covar_arr[2] = np.sin(covar_arr[2] * np.pi / 180)  # convert aspect (degrees) to sin
     covar_valid = ~np.isnan(covar_arr).any(axis=0)
     del hls_ref
+    hls_src.close()
     print(f"Covariate shape: {covar_arr.shape}  |  Valid pixels: {covar_valid.sum():,} / {H * W:,}")
 
     #mask invalid HLS pixels (e.g. nodata, low NDVI) — adjust thresholds as needed
